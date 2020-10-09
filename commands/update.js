@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const childProcess = require("child_process");
+
 module.exports = {
   name: "update",
   aliases: [],
