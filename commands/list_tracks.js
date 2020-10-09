@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 const AcUtil = require('../util/AcUtil');
 
 module.exports = {
-  name: "list_templates",
+  name: "list_tracks",
   aliases: ["tracks"],
   description: "Display all tracks available on server",
   execute(message) {
