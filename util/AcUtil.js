@@ -1050,7 +1050,7 @@ module.exports.startAcserverProcess = function(req, res) {
 }
 
 // post stop ac server
-module.exports.postStopAcServer = function(req, res) {
+module.exports.postStopAcServer = function() {
   try {
     if (acServerPid) {
       if (isRunningOnWindows) {
@@ -1065,12 +1065,9 @@ module.exports.postStopAcServer = function(req, res) {
       acServerLogName = undefined;
     }
     
-    res.status(200);
-    res.send('OK');
+    return true
   } catch (e) {
-    console.log('Error: POST/api/acserver/stop - ' + e);
-    res.status(500);
-    res.send('Application error');
+    return false
   }
 }
 
@@ -1219,9 +1216,8 @@ module.exports.applyTemplatedConfiguration = function(uuid) {
 }
 
 // delete template based on uuid
-module.exports.deleteTemplateBasedOnUuid = function(req, res) {
+module.exports.deleteTemplateBasedOnUuid = function(uuid) {
   try {
-    var uuid = req.params.uuid;
     if (!uuid) {
       throw 'UUID not provided';
     }
