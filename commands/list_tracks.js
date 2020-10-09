@@ -13,7 +13,7 @@ module.exports = {
     .setDescription("List of all server tracks")
     .setColor("#F8AA2A");
     
-    tracks.forEach((template) => {
+    tracks.forEach((track) => {
       tracksEmbed.addField(
         `**${track.name}**`,
         `${track.config.join(', ')}`,
