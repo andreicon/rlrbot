@@ -16,7 +16,7 @@ module.exports = {
     tracks.forEach((track) => {
       tracksEmbed.addField(
         `**${track.name}**`,
-        `${track.config.join(', ')}`,
+        `${track.configs.join(', ')}`,
         true
         );
       });
