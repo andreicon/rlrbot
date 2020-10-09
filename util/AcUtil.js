@@ -519,7 +519,7 @@ module.exports.postWeatherConfig = function(req, res) {
 }
 
 // get tracks available on server
-module.exports.getTracksAvailableOnServer = function(req, res) {
+module.exports.getTracksAvailableOnServer = function() {
   try {
     var trackNames = fs.readdirSync(contentPath + '/tracks');
     var tracks = [];
@@ -540,12 +540,9 @@ module.exports.getTracksAvailableOnServer = function(req, res) {
       tracks.push(track);
     }
     
-    res.status(200);
-    res.send(tracks);
+    return tracks;
   } catch (e) {
-    console.log('Error: GET/api/tracks - ' + e);
-    res.status(500);
-    res.send('Application error');
+    return [];
   }
 }
 
