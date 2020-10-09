@@ -6,9 +6,9 @@ module.exports = {
   aliases: ["stop"],
   description: "Stop currently running server",
   execute(message) {
-    let message = "Server could not be stopped, contact the admin";
+    let returnMessage = "Server could not be stopped, contact the admin";
     if (AcUtil.postStopAcServer()) {
-      message = "Server stopped"
+      returnMessage = "Server stopped"
     }
     
     let stopEmbed = new MessageEmbed()
