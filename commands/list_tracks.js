@@ -16,7 +16,7 @@ module.exports = {
     tracks.forEach((track) => {
       tracksEmbed.addField(
         `**${track.name}**`,
-        `${track.configs.join(', ')}`,
+        `${track.configs && track.configs.length ? track.configs.join(', ') : '(no configs detected), use empty string'}`,
         true
         );
       });

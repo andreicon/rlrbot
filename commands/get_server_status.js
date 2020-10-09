@@ -3,22 +3,16 @@ const AcUtil = require('../util/AcUtil');
 
 module.exports = {
   name: "get_server_status",
-  aliases: ["server_status"],
+  aliases: ["server_status", "status"],
   description: "Display server status",
   execute(message) {
     let configurations = AcUtil.getCompleteConfiguration();
     let status = AcUtil.getServerStatus();
     
     let configurationsEmbed = new MessageEmbed()
-    .setTitle("Server configurations")
-    .setDescription("List of all server configurations")
+    .setTitle(configurations.SERVER.NAME)
+    .setDescription(status)
     .setColor("#F8AA2A");
-
-    configurationsEmbed.addField('Server name:', `${configurations.SERVER.NAME}`, true);
-    configurationsEmbed.addField('Status:', `${status}`, true);
-
-    configurationsEmbed.addField('Track:', `${configurations.SERVER.TRACK} - ${configurations.SERVER.CONFIG_TRACK}`, true);
-    configurationsEmbed.addField('Cars:', configurations.SERVER.CARS, true);
       
     configurationsEmbed.setTimestamp();
       

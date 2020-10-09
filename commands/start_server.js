@@ -14,7 +14,7 @@ module.exports = {
     .setColor("#F8AA2A");
 
     configurationsEmbed.addField('Server name:', `${configurations.SERVER.NAME}`, true);
-    configurationsEmbed.addField('Track:', `${configurations.SERVER.TRACK} - ${configurations.SERVER.CONFIG_TRACK}`, true);
+    configurationsEmbed.addField('Track:', `${configurations.SERVER.TRACK} ${configurations.SERVER.CONFIG_TRACK ? `- ${configurations.SERVER.CONFIG_TRACK}` : ''}`, true);
     configurationsEmbed.addField('Cars:', configurations.SERVER.CARS, true);
       
     configurationsEmbed.setTimestamp();

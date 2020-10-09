@@ -24,7 +24,6 @@ try {
 	var entryList =  multiLine.read(serverPath + 'cfg/entry_list.ini', {encoding: 'utf8'});
 	var ksTyres =  multiLine.read(serverPath + 'manager/ks_tyres.ini', {encoding: 'utf8'});
 } catch (e) {
-	console.log('Error - ' + e);
 }
 
 function checkLocalContentPath(contentPath) {
@@ -34,7 +33,6 @@ function saveConfig() {
 	try {
 		fs.writeFileSync(serverPath + 'cfg/server_cfg.ini', ini.stringify(config).replace(/\\/gi,''));
 	} catch (e) {
-		console.log('Error - ' + e);
 	}
 }
 
@@ -42,7 +40,6 @@ function saveEntryList() {
 	try {
 		fs.writeFileSync(serverPath + 'cfg/entry_list.ini', ini.stringify(entryList).replace(/\\/gi,''));
 	} catch (e) {
-		console.log('Error - ' + e);
 	}
 }
 
@@ -50,7 +47,6 @@ function saveModTyres() {
     try {
         fs.writeFileSync(serverPath + 'manager/mod_tyres.ini', ini.stringify(modTyres).replace(/\\/gi, ''));
     } catch (e) {
-        console.log('Error - ' + e);
     }
 }
 
@@ -60,7 +56,6 @@ function getDirectories(srcpath) {
 			return fs.statSync(srcpath + '/' + file).isDirectory();
 		});
 	} catch (e) {
-		console.log('Error - ' + e);
 	}
 }
 
@@ -69,7 +64,6 @@ function getDateTimeString() {
 		var d = new Date();
 		return d.getFullYear() + ('0' + d.getMonth()).slice(-2) + ('0' + d.getDate()).slice(-2) + '_' + ('0' + d.getHours()).slice(-2) + ('0' + d.getMinutes()).slice(-2) + ('0' + d.getSeconds()).slice(-2);
 	} catch (e) {
-		console.log('Error - ' + e);
 	}
 }
 
@@ -77,12 +71,10 @@ function writeLogFile(filename, message) {
 	try {
 		fs.appendFile(__dirname + '/logs/' + filename, message + '\r\n', function (err) {});
 	} catch (e) {
-		console.log('Error - ' + e);
 	}
 }
 
 function updateServerLog(log) {
-  console.log(log)
 }
 
 // get complete configuration
@@ -95,15 +87,8 @@ module.exports.getCompleteConfiguration = function() {
 }
 
 // get server config
-module.exports.getServerConfig = function(req, res) {
-  try {
-    res.status(200);
-    res.send(config.SERVER);
-  } catch (e) {
-    console.log('Error: GET/api/server - ' + e);
-    res.status(500);
-    res.send('Application error');
-  }
+module.exports.getServerConfig = function() {
+  return config.SERVER;
 }
 
 // get server status
@@ -112,14 +97,11 @@ module.exports.getServerStatus = function() {
 }
 
 // get server config by id
-module.exports.getServerConfigById = function(req, res) {
+module.exports.getServerConfigById = function(key) {
   try {
-    res.status(200);
-    res.send({ value: config.SERVER[req.params.id.toUpperCase()] });
+    return config.SERVER[key.toUpperCase()];
   } catch (e) {
-    console.log('Error: GET/api/server/:id - ' + e);
-    res.status(500);
-    res.send('Application error');
+    return {}
   }
 }
 
@@ -134,24 +116,20 @@ module.exports.postNewServerConfig = function(req, res) {
     res.status(200);
     res.send('OK');
   } catch (e) {
-    console.log('Error: POST/api/server - ' + e);
     res.status(500);
     res.send('Application error');
   }
 }
 
 // post server config by id
-module.exports.postServerConfigById = function(req, res) {
+module.exports.postServerConfigById = function(key, value) {
   try {
-    config.SERVER[req.params.id.toUpperCase()] = req.body.value;
+    config.SERVER[key.toUpperCase()] = value;
     saveConfig();
-    res.status(200);
-    res.send('OK');
+    return true;
   }
   catch (e) {
-    console.log('Error: POST/api/server/:id - ' + e);
-    res.status(500);
-    res.send('Application error');
+    return false;
   }
 }
 
@@ -161,7 +139,6 @@ module.exports.getBookingConfig = function(req, res) {
     res.status(200);
     res.send(config.BOOK);
   } catch (e) {
-    console.log('Error: GET/api/book - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -173,7 +150,6 @@ module.exports.getBookingConfigById = function(req, res) {
     res.status(200);
     res.send(config.BOOK[req.params.id.toUpperCase()]);
   } catch (e) {
-    console.log('Error: GET/api/book/:id - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -199,7 +175,6 @@ module.exports.postNewBookingConfig = function(req, res) {
     res.status(200);
     res.send('OK');
   } catch (e) {
-    console.log('Error: POST/api/book/ - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -213,7 +188,6 @@ module.exports.postBookingConfigById = function(req, res) {
     res.status(200);
     res.send('OK');
   } catch (e) {
-    console.log('Error: POST/api/book/:id - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -225,7 +199,6 @@ module.exports.getPracticeConfig = function(req, res) {
     res.status(200);
     res.send(config.PRACTICE);
   } catch (e) {
-    console.log('Error: GET/api/practice - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -237,7 +210,6 @@ module.exports.getPracticeConfigById = function(req, res) {
     res.status(200);
     res.send(config.PRACTICE[req.params.id.toUpperCase()]);
   } catch (e) {
-    console.log('Error: GET/api/practice/:id - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -263,7 +235,6 @@ module.exports.postNewPracticeConfig = function(req, res) {
     res.status(200);
     res.send('OK');
   } catch (e) {
-    console.log('Error: POST/api/practice - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -278,7 +249,6 @@ module.exports.postPracticeConfigById = function(req, res) {
     res.status(200);
     res.send('OK');
   } catch (e) {
-    console.log('Error: POST/api/practice/:id - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -289,7 +259,6 @@ module.exports.getQualifyConfig = function(req, res) {
   try {
     res.send(config.QUALIFY);
   } catch (e) {
-    console.log('Error: GET/api/qualify - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -301,7 +270,6 @@ module.exports.getQualifyConfigById = function(req, res) {
     res.status(200);
     res.send(config.QUALIFY[req.params.id.toUpperCase()]);
   } catch (e) {
-    console.log('Error: GET/api/qualify/:id - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -328,7 +296,6 @@ module.exports.postNewQualifyConfig = function(req, res) {
     res.status(200);
     res.send('OK');
   } catch (e) {
-    console.log('Error: POST/api/qualify - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -342,7 +309,6 @@ module.exports.postQualifyConfig = function(req, res) {
     res.status(200);
     res.send('OK');
   } catch (e) {
-    console.log('Error: POST/api/qualify/:id - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -354,7 +320,6 @@ module.exports.getRaceConfig = function(req, res) {
     res.status(200);
     res.send(config.RACE);
   } catch (e) {
-    console.log('Error: GET/api/race - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -365,7 +330,6 @@ module.exports.getRaceConfigById = function(req, res) {
   try {
     res.send(config.RACE[req.params.id.toUpperCase()]);
   } catch (e) {
-    console.log('Error: GET/api/race/:id - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -391,7 +355,6 @@ module.exports.postNewRaceConfig = function(req, res) {
     res.status(200);
     res.send('OK');
   } catch (e) {
-    console.log('Error: POST/api/race - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -405,7 +368,6 @@ module.exports.postRaceConfigById = function(req, res) {
     res.status(200);
     res.send('OK');
   } catch (e) {
-    console.log('Error: POST/api/race/:id - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -417,7 +379,6 @@ module.exports.getDynamictrackConfig = function(req, res) {
     res.status(200);
     res.send(config.DYNAMIC_TRACK);
   } catch (e) {
-    console.log('Error: GET/api/dynamictrack - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -429,7 +390,6 @@ module.exports.getDynamictrackConfigById = function(req, res) {
     res.status(200);
     res.send(config.DYNAMIC_TRACK[req.params.id.toUpperCase()]);
   } catch (e) {
-    console.log('Error: GET/api/dynamictrack/:id - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -455,7 +415,6 @@ module.exports.postDynamictrackConfig = function(req, res) {
     res.status(200);
     res.send('OK');
   } catch (e) {
-    console.log('Error: POST/api/dynamictrack - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -469,7 +428,6 @@ module.exports.postTrackDynamictrackConfigById = function(req, res) {
     res.status(200);
     res.send('OK');
   } catch (e) {
-    console.log('Error: POST/api/dynamictrack/:id - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -489,7 +447,6 @@ module.exports.getWeatherConfig = function(req, res) {
     res.status(200);
     res.send(weather);
   } catch (e) {
-    console.log('Error: GET/api/weather - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -512,7 +469,6 @@ module.exports.postWeatherConfig = function(req, res) {
     res.status(200);
     res.send('OK');
   } catch (e) {
-    console.log('Error: POST/api/weather - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -534,7 +490,6 @@ module.exports.getTracksAvailableOnServer = function() {
         track.configs = configs;
       }
       catch (e) {
-        console.log('Track not found: ' + trackName);
       }
       
       tracks.push(track);
@@ -547,15 +502,12 @@ module.exports.getTracksAvailableOnServer = function() {
 }
 
 // get track
-module.exports.getTrack = function(req, res) {
+module.exports.getTrack = function(track) {
   try {
-    var trackDetails = fs.readFileSync(contentPath + '/tracks/' + req.params.track + '/ui/ui_track.json', 'utf-8');
-    res.status(200);
-    res.send(trackDetails);
+    var trackDetails = fs.readFileSync(contentPath + '/tracks/' + track + '/ui/ui_track.json', 'utf-8');
+    return trackDetails;
   } catch (e) {
-    console.log('Error: GET/api/tracks/:track - ' + e);
-    res.status(500);
-    res.send('Application error');
+    return {}
   }
 }
 
@@ -570,7 +522,6 @@ module.exports.removeExistingTrack = function(req, res) {
     res.status(200);
     res.send('OK');
   } catch (e) {
-    console.log('Error: DELETE/api/track/:track - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -584,7 +535,6 @@ module.exports.getTrackImage = function(req, res) {
     res.contentType('image/jpeg');
     res.send(image);
   } catch (e) {
-    console.log('Error: GET/api/tracks/:track/image - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -597,7 +547,6 @@ module.exports.getTrackConfig = function(req, res) {
     res.status(200);
     res.send(trackDetails);
   } catch (e) {
-    console.log('Error: GET/api/tracks/:track/:config - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -611,7 +560,6 @@ module.exports.getTrackConfigImage = function(req, res) {
     res.contentType('image/jpeg');
     res.send(image);
   } catch (e) {
-    console.log('Error: GET/api/tracks/:track/:config/image - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -678,7 +626,6 @@ module.exports.storeUploadedFileForTrack = function(req, res) {
     res.status(200);
     res.send('OK');
   } catch (e) {
-    console.log('Error: POST/api/tracks/new - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -692,7 +639,6 @@ module.exports.getCarsAvailableOnServer = function(req, res) {
     res.status(200);
     res.send(cars);
   } catch (e) {
-    console.log('Error: GET/api/cars - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -758,7 +704,6 @@ module.exports.addNewCar = function(req, res) {
     res.status(200);
     res.send('OK');
   } catch (e) {
-    console.log('Error: POST/api/cars - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -772,13 +717,11 @@ module.exports.getCarSkin = function(req, res) {
       var skins = fs.readdirSync(contentPath + '/cars/' + req.params.car + '/skins');
     }
     catch (e) {
-      console.log('Car not found: ' + req.params.car);
     }
     
     res.status(200);
     res.send({ skins: skins });
   } catch (e) {
-    console.log('Error: GET/api/cars/:car - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -800,7 +743,6 @@ module.exports.removeExistingCar = function(req, res) {
     res.send('OK');
   }
   catch (e) {
-    console.log('Error: DELETE/api/cars/:car - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -812,7 +754,6 @@ module.exports.getEntryList = function(req, res) {
     res.status(200);
     res.send(entryList);
   } catch (e) {
-    console.log('Error: GET/api/entrylist - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -830,7 +771,6 @@ module.exports.postEntryList = function(req, res) {
     saveEntryList();
   }
   catch (e) {
-    console.log('Error: POST/api/entrylist - ' + e);
     res.status(500);
     res.send('Application error')
   }
@@ -854,7 +794,6 @@ module.exports.getDrivers = function(req, res) {
     });
   }
   catch (e) {
-    console.log('Error: GET/api/drivers - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -885,7 +824,6 @@ module.exports.postDrivers = function(req, res) {
     });
   }
   catch (e) {
-    console.log('Error: POST/api/drivers - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -926,7 +864,6 @@ module.exports.deleteDriverByGuid = function(req, res) {
     });
   }
   catch (e) {
-    console.log('Error: DELETE/api/drivers - ' + e);
     res.status(500);
     res.send('Application error');
     return;
@@ -959,7 +896,6 @@ module.exports.getTyresForCars = function(req, res) {
     res.send(result)
   }
   catch (e) {
-    console.log('Error: GET/api/tyres - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -971,7 +907,6 @@ module.exports.getAcserverStatus = function(req, res) {
     res.status(200);
     res.send({ status: acServerStatus });
   } catch (e) {
-    console.log('Error: GET/api/acserver/status - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -980,21 +915,17 @@ module.exports.getAcserverStatus = function(req, res) {
 // start acserver process
 module.exports.startAcserverProcess = function(req, res) {
   try {
-    console.log('OS is ' + process.platform);
     var acServer = undefined;
     
     if (isRunningOnWindows) {
-      console.log('Starting Windows Server');
       acServer = childProcess.spawn('acServer.exe', { cwd: serverPath });
     } else {
-      console.log('Starting Linux Server');
       acServer = childProcess.spawn('./acServer', { cwd: serverPath });
     }
     acServerPid = acServer.pid;
     acServerLogName = getDateTimeString() + '_log.txt';
     
     acServer.stdout.on('data', function (data) {
-      console.log(data)
       if (acServerStatus === 0) {
         acServerStatus = -1;
       }
@@ -1011,37 +942,31 @@ module.exports.startAcserverProcess = function(req, res) {
       
       if (dataString.indexOf('PAGE: /ENTRY') === -1) {
         //Log to console and file
-        console.log(dataString);
         var logEntry = getDateTimeString() + ': ' + data;
         writeLogFile('server_' + acServerLogName, logEntry);
         updateServerLog(logEntry);
         
         //Set current session
         if (dataString.indexOf('session name') !== -1) {
-          var session = dataString.substr(dataString.indexOf('session name :') + 14);
-          currentSession = session.substr(0, dataString.indexOf('\n')).trim();
+          currentSession = dataString.match(/(SENDING session name : )(Practice|Qualify|Race)/)[2];
         }
       }
     });
     acServer.stderr.on('data', function (data) {
-      console.log('stderr: ' + data);
       var logEntry = getDateTimeString() + ': ' + data;
       writeLogFile('error_' + acServerLogName, logEntry);
       updateServerLog(logEntry);
     });
     acServer.on('close', function (code) {
-      console.log('closing code: ' + code);
       updateServerLog('Server closed with code: ' + code + '\n');
     });
     acServer.on('exit', function (code) {
-      console.log('exit code: ' + code);
       updateServerLog('Server exited with code: ' + code + '\n');
       acServerStatus = 0;
     });
     
     return true;
   } catch (e) {
-    console.log(e)
     return false;
   }
 }
@@ -1051,15 +976,14 @@ module.exports.postStopAcServer = function() {
   try {
     if (acServerPid) {
       if (isRunningOnWindows) {
-        console.log('Stopping Windows Server');
         childProcess.spawn('taskkill', ['/pid', acServerPid, '/f', '/t']);
       } else {
-        console.log('Stopping Linux Server');
         childProcess.spawn('kill', [acServerPid]);
       }
       
       acServerPid = undefined;
       acServerLogName = undefined;
+      currentSession = 'stopped'
     }
     
     return true
@@ -1074,7 +998,6 @@ module.exports.getStrackerServerStatus = function(req, res) {
     res.status(200);
     res.send({ status: sTrackerPath === '' ? -2 : sTrackerServerStatus });
   } catch (e) {
-    console.log('Error: GET/api/strackerserver/status - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -1086,10 +1009,8 @@ module.exports.postStartStrackerServer = function(req, res) {
     var sTracker = undefined;
     
     if (isRunningOnWindows) {
-      console.log('Starting Windows sTracker');
       sTracker = childProcess.spawn('stracker.exe', ['--stracker_ini', 'stracker.ini'], { cwd: sTrackerPath });
     } else {
-      console.log('Starting Linux sTracker');
       sTracker = childProcess.spawn('./stracker_linux_x86/stracker', ['--stracker_ini', 'stracker.ini'], { cwd: sTrackerPath });
     }
     sTrackerServerPid = sTracker.pid;
@@ -1099,23 +1020,18 @@ module.exports.postStartStrackerServer = function(req, res) {
     }
     
     sTracker.stdout.on('data', function (data) {
-      console.log(data);
     });
     sTracker.stderr.on('data', function (data) {
-      console.log('stderr: ' + data);
     });
     sTracker.on('close', function (code) {
-      console.log('closing code: ' + code);
     });
     sTracker.on('exit', function (code) {
-      console.log('exit code: ' + code);
       sTrackerServerStatus = 0;
     });
     
     res.status(200);
     res.send('OK');
   } catch (e) {
-    console.log('Error: POST/api/strackerserver - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -1126,10 +1042,8 @@ module.exports.postStopStrackerServer = function(req, res) {
   try {
     if (sTrackerServerPid) {
       if (isRunningOnWindows) {
-        console.log('Stopping Windows sTracker');
         childProcess.spawn('taskkill', ['/pid', sTrackerServerPid, '/f', '/t']);
       } else {
-        console.log('Stopping Linux sTracker');
         childProcess.spawn('kill', [sTrackerServerPid]);
       }
       sTrackerServerPid = undefined;
@@ -1138,7 +1052,6 @@ module.exports.postStopStrackerServer = function(req, res) {
     res.status(200);
     res.send('OK');
   } catch (e) {
-    console.log('Error: POST/api/strackerserver/stop - ' + e);
     res.status(500);
     res.send('Application error');
   }
@@ -1161,7 +1074,6 @@ module.exports.listTemplates = function() {
     
     return templates;
   } catch (e) {
-    console.log('Error: GET/api/templates - ' + e);
     return [];
   }
 }
@@ -1184,7 +1096,6 @@ module.exports.storeCurrentConfigurationToANewTemplate = function(template) {
     
     return template
   } catch (e) {
-    console.log('Error: POST/api/templates - ' + e);
     return false
   }
 }
@@ -1192,7 +1103,6 @@ module.exports.storeCurrentConfigurationToANewTemplate = function(template) {
 // apply templated configuration
 module.exports.applyTemplatedConfiguration = function(uuid) {
   try {
-    console.log(uuid)
     if (!uuid) {
       throw 'UUID not provided';
     }
@@ -1207,7 +1117,6 @@ module.exports.applyTemplatedConfiguration = function(uuid) {
     
     return template
   } catch (e) {
-    console.log(e)
     return false;
   }
 }
@@ -1225,7 +1134,6 @@ module.exports.deleteTemplateBasedOnUuid = function(uuid) {
     res.status(200);
     res.send('OK');
   } catch (e) {
-    console.log('Error: DELETE/api/templates - ' + e);
     res.status(500);
     res.send('Application error');
   }
