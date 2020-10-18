@@ -11,11 +11,12 @@ module.exports = {
     if (argsParsed.length !== 2) {
       throw new Error(`Invalid name or description\n\nUsage: ${this.usage}`);
     }
-    let template = AcUtil.storeCurrentConfigurationToANewTemplate({name: argsParsed[0], description: argsParsed[1]});
-    if (template) {
+    let template = AcUtil.storeCurrentConfigurationToANewTemplate({name: argsParsed[0], description: argsParsed[1]}); // store to a new Template based on Title and Descriptio
+    if (template) { // if the template was created successfully
       return message.channel.send(`Template saved as ${template.uuid}`).catch(console.error);
+    } else {
+      return message.channel.send(`Couldn't save template, dunno`).catch(console.error);
     }
-    return message.channel.send(`Couldn't save template, dunno`).catch(console.error);
   }
 };
   

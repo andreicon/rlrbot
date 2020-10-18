@@ -6,7 +6,7 @@ module.exports = {
   aliases: ["complete_config", "get_config"],
   description: "Display all configuration options",
   execute(message) {
-    let configurations = AcUtil.getCompleteConfiguration();
+    let configurations = AcUtil.getCompleteConfiguration(); // get the complete configuration from AcUtil
     
     let configurationsEmbed = new MessageEmbed()
     .setTitle(configurations.SERVER.NAME)
@@ -34,10 +34,9 @@ module.exports = {
     }
     configurationsEmbed.addField('Sessions:', sessions, true);
 
+    configurationsEmbed.setTimestamp(); // add the timestamp to the message
       
-    configurationsEmbed.setTimestamp();
-      
-    return message.channel.send(configurationsEmbed).catch(console.error);
+    return message.channel.send(configurationsEmbed).catch(console.error); // put the message
   }
 };
   
