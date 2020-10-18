@@ -12,7 +12,7 @@ module.exports = {
     }
     
     let stopEmbed = new MessageEmbed()
-    .setTitle(messaage)
+    .setTitle(returnMessage)
     .setColor("#F8AA2A");
 
     stopEmbed.setTimestamp();

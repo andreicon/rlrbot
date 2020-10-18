@@ -14,9 +14,8 @@ module.exports = {
     .setColor("#F8AA2A");
 
     configurationsEmbed.addField('Server name:', `${configurations.SERVER.NAME}`, true); // add server name to message
-    configurationsEmbed.addField('Track:', `${configurations.SERVER.TRACK} - ${configurations.SERVER.CONFIG_TRACK}`, true); // add track to message
+        configurationsEmbed.addField('Track:', `${configurations.SERVER.TRACK} ${configurations.SERVER.CONFIG_TRACK ? `- ${configurations.SERVER.CONFIG_TRACK}` : ''}`, true); // add track to message
     configurationsEmbed.addField('Cars:', configurations.SERVER.CARS, true); // add cars to message
-      
     configurationsEmbed.setTimestamp(); // add timestamp to message
       
     return message.channel.send(configurationsEmbed).catch(console.error); // put message to Discord
